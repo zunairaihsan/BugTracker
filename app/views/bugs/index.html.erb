@@ -1,0 +1,47 @@
+<%= render 'layouts/header'%>
+<div id="bugs">
+  <% @bugs.each do |bug| %>
+    <div class="card">
+        <img
+          <%if bug.image.attached?%>
+              <%= image_tag bug.image %>
+            <%end%>
+        >
+        <div class="card-body">
+           <h2>Title</h2>
+          <h5 class="card-title"><%= bug.title %>
+          <h2>description</h2>
+          <p class="card-text"><%= bug.description %></p>
+          <h2 class="card-title">Bug Type</h2>
+          <%= bug.bugtype %><br/>
+          <h2 class="card-title">Bug deadline</h2>
+          <%= bug.deadline %><br/>
+          <h5 class="card-title">Bug Creator</h5>
+          <td><%= bug.created_by.full_name %></td>
+          <h5 class="card-title">Bug Updated at</h5>
+          <td><%= bug.updated_at.localtime %></td>
+          <h5 class="card-title">Bug created at</h5>
+          <td><%= bug.created_at.localtime %></td>
+
+          <h2 class="card-title">Status</h2>
+          <% if bug.New? %>
+            <i > New</i>
+              <% elsif bug.Started? %>
+                <i > Started</i>
+              <% else %>
+                <i > Resolved</i>
+          <% end %>
+      
+          <div>
+            <%= link_to "Show this bug", project_bug_path(@project,bug) %>
+            <%= link_to "Back to bugs", project_bugs_path %>
+            <%= button_to "Destroy this bug", [@project,@bug], method: :delete %>
+          </div>
+        </div>
+      </div>
+  <% end %>
+
+
+<%= link_to "New bug", new_project_bug_path %>
+<%= link_to "Back to bugs", project_bugs_path %>
+

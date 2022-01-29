@@ -1,0 +1,9 @@
+<% if current_user %>
+  welcome bro! <strong><%= current_user.email %></strong>you are logged in as <%= current_user.role %>
+  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+  <%= link_to "Logout", destroy_user_session_path, 'data-turbo-method': :delete %>
+<% else %>
+  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+  <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+<% end %>
+<%= link_to "open projects", projects_path %>

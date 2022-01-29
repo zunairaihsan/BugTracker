@@ -1,0 +1,35 @@
+<%= form_with(model: project) do |form| %>
+  <% if project.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(project.errors.count, "error") %> prohibited this project from being saved:</h2>
+
+      <ul>
+        <% project.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+       
+      </ul>
+    </div>
+  <% end %>
+  <div>
+     <%= form.text_field :title, :placeholder => "title" %>
+  <div>
+   <%#= select_tag(:users, options_from_collection_for_select(user.where.not(:role=>'Manager'),"id","full_name"), options = {multiple: true,class:'form-control'}) %>
+  <%= form.collection_select :users, User.where.not(:role => 'Manager'), :id, :name_with_type, {selected: @project.enrolled_user.ids}, {multiple: true, id: "sel1", class: "form-control selectpicker", placeholder: "Select users.", include_blank: false, include_hidden: false} %>
+          <%#= form.fields_for :enrollments do |userform| %>
+          
+          
+          <%#= userform.select(:user, options_for_select(user.where.not(:role=>'Manager').each_entry { |f| f.to_s.humanize  } ,"id", "full_name") ,{},options = {multiple: true, class: 'form-control'}) %>
+          
+          <%# end %>
+  <div>
+  </div>
+  </div>
+   <%= form.text_area :description %>
+  </div>
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+

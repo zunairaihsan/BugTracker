@@ -1,0 +1,44 @@
+<%= render 'layouts/header'%>
+<br/>
+<%= form_with(model:[@project,bug]) do |form| %>
+  <% if bug.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(bug.errors.count, "error") %> prohibited this bug from being saved:</h2>
+
+      <ul>
+        <% bug.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+       <div>
+     <%= form.text_field :title, :placeholder => "title" %>
+      <div>
+      </div>
+        <label for="description">description</label>
+      </div>
+       </div>
+         <%= form.text_area :description, id: 'editor', class: 'form-control' %>
+      </div><br />
+      </div>
+        <label for="deadline">Deadline</label>
+      </div>
+      <div>
+      <%= form.datetime_select :deadline, class: 'form-control' %>
+      <div>
+       </div>
+        <label for="bugtype">Bugtype</label>
+      </div>
+      <div>
+        <%= form.select :bugtype, options_for_select(Bug.bugtypes), class: 'form-control' %>
+      <div>
+      </div>
+        <label for="status">Status</label>
+      </div>
+      <div>
+        <%= form.file_field :image %>
+      <div>
+    <%= form.submit %>
+  </div>
+<% end %>

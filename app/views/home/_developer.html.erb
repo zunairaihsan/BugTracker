@@ -1,0 +1,41 @@
+<%= render 'layouts/header' %>
+<h1>Projects</h1>
+
+<div id="projects">
+  <% @projects.each do |project| %>
+    <%= render project %>
+ <div class="blog-card">
+    <div class="meta">
+      <div class="photo" style=""></div>
+      <ul class="details">
+        <li class="manager"><a href="#"><%= project.creator.full_name %></a></li>
+        <li class="date"><%= project.created_at.to_date %></li>
+        <li class="enrolled user"><%= project.enrolled_user.count %></li>
+      <ul>
+<div>
+</div>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="description">
+      <h1><%= project.title %></h1>
+      <p> <%= project.description %></p>
+      <p class="read-more">
+        <%= link_to "show project", project_path(project) %>
+      </p>
+    </div>
+  </div>
+  <div class="blog-card alt">
+    <div class="meta">
+      <div class="photo" style=""></div>
+      <ul class="details">
+        
+        <li class="date"><%= project.created_at.to_date %></li>
+      </ul>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<%= link_to "New project", new_project_path %>

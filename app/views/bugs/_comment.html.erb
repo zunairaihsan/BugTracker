@@ -1,0 +1,11 @@
+<% if comments.count > 0 %>
+  <% comments.each do |comment| %>
+    <%= comment.user.full_name %>
+    <%= comment.content %>
+      <% if policy(comment).delete? %>
+        <%= link_to [comment.bug.project, comment.bug, comment], method: :delete, data: {confirm: 'Are you sure?'} do %>
+        <% end %>
+      <% end %>
+  <% end %>
+<% end %>
+

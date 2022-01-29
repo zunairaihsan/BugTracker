@@ -1,0 +1,85 @@
+<%= render 'layouts/header'%>
+
+
+<div class="card">
+    <img
+       <%if @bug.image.attached?%>
+          <%= image_tag @bug.image %>
+        <%end%>>
+    <div class="card-body">
+      <h5 class="card-title"><%= @bug.title %></h5>
+      <p class="card-text"><%= @bug.description %></p>
+      <h2 class="card-title">Bug Type</h2>
+      <%= @bug.bugtype %><br/>
+      <h2 class="card-title">Bug deadline</h2>
+      <%= @bug.deadline %><br/>
+      <h5 class="card-title">Bug Creator</h5>
+      <td><%= @bug.created_by.full_name %></td>
+      <h5 class="card-title">Bug Updated at</h5>
+      <td><%= @bug.updated_at.localtime %></td>
+      <h5 class="card-title">Bug created at</h5>
+      <td><%= @bug.created_at.localtime %></td>
+
+<h2 class="card-title">Status</h2>
+ <% if @bug.New? %>
+  <i > New</i>
+    <% elsif @bug.Started? %>
+      <i > Started</i>
+    <% else %>
+      <i > Resolved</i>
+<% end %>
+   <h2 class="card-title">Assign it to yourself</h2> 
+<% if ( !@bug.assigned_to_id? && current_user.Developer?) %>
+    <%= form_for pick_path(@bug.project, @bug) do |form| %>
+      <%= form.submit "Pick me up !!" %>
+    <% end %>
+<%end%>
+              
+          
+    
+            
+            
+<% if @bug.assigned_to == current_user %>
+    <%= form_tag drop_path(@bug.project, @bug) do |form| %>
+      <%= submit_tag "put me down !!" %>
+    <% end %>
+<%end%>
+   <h2 class="card-title">Change Status</h2>   
+
+  <%= form_tag status_path(@bug.project, @bug) do |form| %>
+    <%= select_tag :status, options_for_select(Bug.statuses.reject {|key, value| (value == 2 && @bug.Bug?) or (value == 3 && @bug.Feature?) or value == Bug.statuses[@bug.status]}, Bug.statuses[@bug.status]), {class: 'form-control'} %>
+    <%= submit_tag "Change Status" %>
+  <% end %>
+       <h2 class="card-title">Comments</h2>       
+  <div class="comment-container">
+    <% if @bug.comments.count > 0 %>
+  <% @bug.comments.each do |comment| %>
+    <%= comment.user.full_name %>
+    <%= comment.content %>
+      <% if policy(comment).delete? %>
+        <%= link_to [comment.bug.project, comment.bug, comment], method: :delete, data: {confirm: 'Are you sure?'} do %>
+        <% end %>
+      <% end %>
+  <% end %>
+<% end %>
+</div>
+
+<h2 class="card-title">Enter comments</h2>
+ <% if policy(@bug.comments.new).create? %>
+    <%= form_for([@project, @bug, @bug.comments.new], remote: true) do |form| %>
+          <%= current_user.full_name %>
+          <%= form.text_field :content %>
+          <%= form.submit "Comment" %>
+    <% end %>
+<% end %>
+
+<div>
+  <%= link_to "Edit this bug", edit_project_bug_path(@bug) %> |
+  <%= link_to "Back to bugs", project_bugs_path %>
+  <%= button_to "Destroy this bug", [@project,@bug], method: :delete %>
+</div>
+
+
+
+    </div>
+  </div>
