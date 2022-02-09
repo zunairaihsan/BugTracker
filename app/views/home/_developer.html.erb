@@ -1,41 +1,50 @@
-<%= render 'layouts/header' %>
-<h1>Projects</h1>
 
-<div id="projects">
-  <% @projects.each do |project| %>
-    <%= render project %>
- <div class="blog-card">
-    <div class="meta">
-      <div class="photo" style=""></div>
-      <ul class="details">
-        <li class="manager"><a href="#"><%= project.creator.full_name %></a></li>
-        <li class="date"><%= project.created_at.to_date %></li>
-        <li class="enrolled user"><%= project.enrolled_user.count %></li>
-      <ul>
-<div>
-</div>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <div class="description">
-      <h1><%= project.title %></h1>
-      <p> <%= project.description %></p>
-      <p class="read-more">
-        <%= link_to "show project", project_path(project) %>
-      </p>
-    </div>
-  </div>
-  <div class="blog-card alt">
-    <div class="meta">
-      <div class="photo" style=""></div>
-      <ul class="details">
-        
-        <li class="date"><%= project.created_at.to_date %></li>
-      </ul>
-    </div>
-  </div>
-  <% end %>
-</div>
+<%= render 'layouts/header'%>
+<% if current_user %>
+  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+  <%= link_to "Logout", destroy_user_session_path, 'data-turbo-method': :delete %>
+<% else %>
+  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+  <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+  
+<% end %>
+<%= link_to "open projects", projects_path %>
 
-<%= link_to "New project", new_project_path %>
+ <div class="main">
+        <div class="card">
+            <div class="card-body">
+                <i class="fa fa-pen fa-xs edit"></i>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>:</td>
+                            <td><%= current_user.full_name %></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>:</td>
+                            <td><%= current_user.email %></td>
+                        </tr>
+                        <tr>
+                            <td>Role</td>
+                            <td>:</td>
+                            <td><%= current_user.role %></td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Projects</td>
+                            <td>:</td>
+                            <td><%= current_user.projects.count %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</body>
+</html>
+
+
+
+       
+   

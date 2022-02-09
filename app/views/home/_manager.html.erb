@@ -1,9 +1,50 @@
+<%= render 'layouts/header'%>
+
 <% if current_user %>
-  welcome bro! <strong><%= current_user.email %></strong>you are logged in as <%= current_user.role %>
   <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
   <%= link_to "Logout", destroy_user_session_path, 'data-turbo-method': :delete %>
 <% else %>
   <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
   <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
+  
 <% end %>
 <%= link_to "open projects", projects_path %>
+
+ <div class="main">
+        <div class="card">
+            <div class="card-body">
+                <i class="fa fa-pen fa-xs edit"></i>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>:</td>
+                            <td><%= current_user.full_name %></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td>:</td>
+                            <td><%= current_user.email %></td>
+                        </tr>
+                        <tr>
+                            <td>Role</td>
+                            <td>:</td>
+                            <td><%= current_user.role %></td>
+                        </tr>
+                       
+                        <tr>
+                            <td>Projects</td>
+                            <td>:</td>
+                            <td><%= current_user.projects.count %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</body>
+</html>
+
+
+
+       
+   
