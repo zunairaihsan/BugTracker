@@ -1,0 +1,141 @@
+<%= render 'layouts/header'%>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 my-3">
+	
+			<div class="projects mb-4">
+				<div class="projects-inner">
+					<header class="projects-header">
+						<div class="title">Total bugs</div>
+						<i class="zmdi zmdi-download"></i>
+					</header>
+					<table class="projects-table">
+						<thead>
+							<tr>
+           <% if current_user.Developer?%>
+              <th>Pick</th>
+            <%end%>
+						<% if current_user.Quality?%>
+              <th>Change status</th>
+            <%end%>
+            <% if current_user.Quality?%>
+              <th>Links</th>
+            <%end%>
+                
+              </tr>
+						</thead>
+            <% if current_user.Developer?%>
+              <td>
+								<p><% if ( !@bug.assigned_to_id? && current_user.Developer?) %>
+                    <%= form_for pick_path(@bug.project, @bug) do |form| %>
+                      <%= form.submit "Pick me up !!" %>
+                    <% end %>
+                <%end%>
+                                    
+                <% if @bug.assigned_to == current_user %>
+                    <%= form_tag drop_path(@bug.project, @bug) do |form| %>
+                      <%= submit_tag "put me down !!" %>
+                    <% end %>
+                <%end%></p>
+								<p class="text-danger"></p>
+							</td>
+            <%end%>
+              
+               <td>
+                  <%= form_tag status_path(@bug.project, @bug) do |form| %>
+                    <%= select_tag :status, options_for_select(Bug.statuses.reject {|key, value| (value == 2 && @bug.Bug?) or (value == 3 && @bug.Feature?) or value == Bug.statuses[@bug.status]}, Bug.statuses[@bug.status]), {class: 'form-control'} %>
+                    <%= submit_tag "Change Status" %>
+                  <% end %>
+								<p class="text-danger"></p>
+							</td>
+              <% if current_user.Quality?%>
+              <td>
+               <%= button_to "Destroy this bug", [@project,@bug], method: :delete %>
+               <%= link_to "Edit this bug", edit_project_bug_path(@bug) %> 
+              </td>
+              <%end%>
+						</tr>		
+					</table>
+				</div>
+			</div>
+		</main>
+ <div id="app">
+  <article>
+    <header>
+      <h1><%= @bug.title %></h1>
+    </header>
+    <section>
+      <p ><%= @bug.description %></p>
+    </section>
+  </article>
+</div>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <div class="instagram-card">
+    <div class="instagram-card-header">
+    </div>
+  
+    <div class="intagram-card-image">
+     <%if @bug.image.attached?%>
+          <%= image_tag @bug.image %>
+        <%end%>
+    </div>
+  
+    <div class="instagram-card-content">
+      <p><h2>Comments</h2><%= @bug.comments.count %></p>
+      <br><a class="user-comment"> <div class="comment-container">
+        <% if @bug.comments.count > 0 %>
+      <% @bug.comments.each do |comment| %>
+        <%= comment.user.full_name %>
+        <%= comment.content %><br>
+          <% if policy(comment).delete? %>
+            <%= link_to [comment.bug.project, comment.bug, comment], method: :delete, data: {confirm: 'Are you sure?'} do %>
+            <% end %>
+          <% end %>
+      <% end %>
+    <% end %>
+    </div><br>
+      
+    <hr>
+    </div>
+    
+    <div class="instagram-card-footer">
+       <% if policy(@bug.comments.new).create? %>
+          <%= form_for([@project, @bug, @bug.comments.new], remote: true) do |form| %>
+                <%= current_user.full_name %>
+                <%= form.text_field :content %>
+                <%= form.submit "Comment" %>
+          <% end %>
+      <% end %>
+    </div>
+
+  </div>
+</body>
+</html>
+
+<div>
+ 
+  <%= link_to "Back to bugs", project_bugs_path %>
+  
+</div>
+
+
+
+
+
+
+   
+    
+       
+
+ 
+
+
+
+

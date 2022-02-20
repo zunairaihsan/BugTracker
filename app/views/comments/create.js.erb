@@ -1,0 +1,3 @@
+$('.comment-container').html("<%= j render 'bugs/comment', comments: @bug.comments%>")
+$('#comment_statement').val('')
+$('#comment-count').html("<%= @bug.comments.count %>")

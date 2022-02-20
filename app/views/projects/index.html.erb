@@ -1,0 +1,69 @@
+<%= render 'layouts/header' %>
+
+
+<br>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 my-3">
+	
+			<div class="projects mb-4">
+				<div class="projects-inner">
+					<header class="projects-header">
+						<div class="title">Ongoing Projects:</div>
+						<div class="count"><%=@projects.count%></div>
+						<i class="zmdi zmdi-download"></i>
+					</header>
+					<table class="projects-table">
+						<thead>
+							<tr>
+								<th>Project</th>
+								<th>Deadline</th>
+								<th>Users</th>
+                <th>Creator</th>
+                <th>Bugs</th>
+                <th>links</th>
+							</tr>
+						</thead>
+				<% @projects.each do |project| %>
+             <%= render project %>
+
+						<tr>
+							<td>
+								<p><%= project.title %></p>
+                <p class="text-danger"></p>
+							</td>
+							<td>
+								<p><%= project.created_at.to_date %></p>
+								<p class="text-danger"></p>
+							</td>
+							<td class="member">
+								<figure><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/584938/people_8.png" /></figure>
+								<div class="member-info">
+									<%= project.enrolled_user.count %>
+								</div>
+							</td>
+              	<td>
+								<p><%= project.creator.full_name %></p>
+								<p class="text-danger">
+							</td>
+              <td>
+								<p><%= project.bugs.count %></p>
+								<p class="text-danger">
+							</td>
+              <td>
+								<p><%= link_to "show project", project_path(project) %></p>
+								<p class="text-danger">
+							</td>
+              
+							</td>
+						</tr>		
+          <% end %>
+					</table>
+				</div>
+			</div>
+		</main>
+
+<% if current_user.Manager?%>
+  <%= link_to "New project", new_project_path %>
+<%end%>
+  
+
+

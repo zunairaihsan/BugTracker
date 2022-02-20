@@ -1,0 +1,89 @@
+<%= render 'layouts/header'%>
+
+
+
+<br>
+
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 my-3">
+	
+			<div class="projects mb-4">
+				<div class="projects-inner">
+					<header class="projects-header">
+						<div class="title">Total bugs</div>
+						<div class="count"><%=@bugs.count%></div>
+						<i class="zmdi zmdi-download"></i>
+					</header>
+					<table class="projects-table">
+						<thead>
+							<tr>
+								<th>Bug Title</th>
+								<th>Deadline</th>
+								<th>Creator</th>
+								<th>Status</th>
+                <th>Bug Updated at</th>
+								<th>Bug created at</th>
+								<th>Bug type</th>
+                <th>Show Bug</th>
+              </tr>
+						</thead>
+				<% @bugs.each do |bug| %>
+             <%= render bug %>
+
+						<tr>
+							<td>
+								<p><%= bug.title %></p>
+							</td>
+
+							<td>
+								<p><%= bug.deadline %></p>
+								<p class="text-danger"></p>
+							</td>
+
+							<td class="member">
+								<figure><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/584938/people_8.png" /></figure>
+								<div class="member-info">
+								<%= bug.created_by.full_name %>
+								</div>
+							</td>
+	            
+							<td class="status">
+                  <span class="status-text status-orange"> <% if bug.New? %>
+              <i > New</i>
+                <% elsif bug.Started? %>
+                  <i > Started</i>
+                <% else %>
+                  <i > Resolved</i>
+              <% end %>
+            </span>
+							</td>
+						
+              <td>
+								<p><%= bug.updated_at.localtime %></p>
+								<p class="text-danger"></p>
+							</td>
+              <td>
+								<p><%= bug.created_at.localtime %></p>
+								<p class="text-danger"></p>
+							</td>
+              <td>
+								<p><%= bug.bugtype %></p>
+								<p class="text-danger"></p>
+							</td>
+               <td>
+								<p><%= link_to "Show this bug", project_bug_path(@project,bug) %></p>
+								<p class="text-danger"></p>
+							</td>
+						</tr>		
+          <% end %>
+					</table>
+				</div>
+			</div>
+		</main>
+
+
+
+<% if current_user.Quality?%>
+  <%= link_to "New bug", new_project_bug_path %>
+<%end%>
+  
+

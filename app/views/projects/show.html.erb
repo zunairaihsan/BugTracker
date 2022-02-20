@@ -1,0 +1,38 @@
+<%= render 'layouts/header' %>
+<%= render @project %>
+
+
+<div id="app">
+  <article>
+    <header>
+      <h3><%= @project.title %></h3>
+    </header>
+    <section>
+      <p ><%= @project.description %></p>
+    </section>
+    
+    <footer id="comments" class="comments-wrapper">
+      <div>
+
+      <%= link_to "Bugs", project_bugs_path(@project) %>
+      
+      <% if current_user.Quality? %>
+      <%= link_to "New bug", new_project_bug_path(@project) %>
+      <%end%>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+<% if policy(@project).delete? %>
+  <%= button_to @project, method: :delete, data: {confirm: "Are you sure you want to delete this user?"}, class: "btn btn-responsive btn-default btn-sm mdb-color darken-3 " do %>Delete
+  <% end %>
+<% end %><br>
+</div>
+<% if policy(@project).edit? %>
+    <%= link_to edit_project_path(@project), class: "btn btn-responsive btn-default btn-sm mdb-color darken-3" do %>Edit
+    <% end %>
+<% end %><br>

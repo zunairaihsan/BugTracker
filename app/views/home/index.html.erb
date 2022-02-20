@@ -1,0 +1,8 @@
+
+<% if current_user.Manager? %>
+  <%= render "home/manager", projects: @projects %>
+<% elsif current_user.Developer?%>
+    <%= render  "home/developer", projects: @projects %>
+<% else %>
+<%= render  "home/quality", projects: @projects %>
+<% end %>
